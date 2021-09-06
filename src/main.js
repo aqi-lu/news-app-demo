@@ -3,9 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// 加载全局样式
-import './styles/index.scss'
-
 // 加载 Vant 组件库
 import Vant from 'vant'
 
@@ -14,6 +11,9 @@ import 'vant/lib/index.css'
 
 // 自动设置 REM 基准值 (html.标签字体大小)
 import 'amfe-flexible'
+
+// 加载全局样式(放到最后就不会影响组件样式加载了，方便覆盖第三方样式)
+import './styles/index.scss'
 
 // 全局注册 Vant 中的组件
 Vue.use(Vant)
