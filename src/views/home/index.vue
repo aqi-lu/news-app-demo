@@ -3,6 +3,12 @@
     <van-nav-bar class="app-nav-bar">
     <van-button type="info" slot="title" class="search-btn" icon="search" size="small" round>搜索</van-button>
     </van-nav-bar>
+
+  <van-tabs v-model="active">
+    <van-tab :title="channnel.name" v-for="channel in channels" :key="channel.id">
+      {{channel.name}}
+    </van-tab>
+  </van-tabs>
   </div>
 </template>
 
@@ -12,7 +18,9 @@ export default {
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      active: 0
+    }
   },
   computed: {},
   watch: {},
@@ -30,15 +38,13 @@ export default {
   .search-btn {
     width: 277px;
     height: 32px;
-    background: #fff;
+    background: #808080;
     border: none;
     .van-icon {
       font-size: 16px;
-      color:#333
     }
     .van-button__text {
       font-size: 14px;
-      color:#333
     }
   }
 }

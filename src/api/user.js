@@ -9,3 +9,19 @@ export const login = data => {
     data
   })
 }
+
+// 发送短信验证码
+export const sendSms = mobile => {
+  return request({
+    method: 'GET',
+    url: `/app/v1_0/sms/codes/${mobile}`
+  })
+}
+
+// 获取用户获取用户频道请求接口
+export const getUserChannels = () => {
+  return request({
+    method: 'GET',
+    url: '/app/v1_0/user/channels'
+  })
+}
