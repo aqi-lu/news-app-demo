@@ -22,6 +22,7 @@
         v-model="user.mobile"
         icon-prefix="iconfont icon"
         left-icon="shouji"
+        center
         placeholder="请输入手机号"
         name="mobile"
         :rules="formRules.mobile"
@@ -36,10 +37,18 @@
         :rules="formRules.code"
       >
         <template #button>
+          <van-count-down
+    v-if="isCountDownShow"
+    :time="1000 * 60"
+    format="ss s"
+    @finish="isCountDownShow = false"
+  />
           <van-button
+            v-else
             class="send-btn"
             size="mini"
             round
+            :loading="isSendSmsLoading"
             @click.prevent="onSendSms"
             >获取验证码</van-button
           >
@@ -83,7 +92,9 @@ export default {
           { required: true, message: '请填写验证码' },
           { pattern: /^\d{6}$/, message: '验证码格式错误' }
         ]
-      }
+      },
+      isCountDownShow: false,
+      isSendSmsLoading: false
     }
   },
   computed: {},
@@ -123,7 +134,11 @@ export default {
       // 校验手机号码
         await this.$refs['login-form'].validate('mobile')
         // 验证通过，请求发送验证码
+        this.isSendSmsLoading = true // 先让按钮转起来
         await sendSms(this.user.mobile)
+
+        // 短信发出去了,显示倒计时，关闭发送按钮
+        this.isCountDownShow = true
       } catch (err) {
       // try 里面任何代码的错误都会进入 catch
       // 不同的错误需要有不同的提示，那就需要判断了
@@ -145,6 +160,8 @@ export default {
           position: 'top'
         })
       }
+      // 无论发送验证码成功还是失败，最后都要关闭发送按钮的 loading 状态
+      this.isSendSmsLoading = false
     }
   }
 }

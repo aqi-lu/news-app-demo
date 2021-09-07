@@ -18,7 +18,7 @@ export const sendSms = mobile => {
   })
 }
 
-// 获取用户获取用户频道请求接口
+// 获取用户频道请求接口
 export const getUserChannels = () => {
   return request({
     method: 'GET',
