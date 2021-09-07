@@ -71,7 +71,7 @@
 
 <script>
 import { login, sendSms } from '@/api/user'
-import { Toast } from 'vant'
+// import { Toast } from 'vant'
 
 export default {
   name: 'LoginIndex',
@@ -103,7 +103,7 @@ export default {
   mounted () {},
   methods: {
     async onlogin () {
-      Toast.loading({
+      this.$toast.loading({
         message: '登录中...', // 提示文本
         forbidClick: true, // 禁止背景点击
         duration: 0 // 展示时长(ms)，值为 0 时，toast 不会消失
@@ -112,13 +112,13 @@ export default {
       // 2.封装请求方法
       // 3.请求调用登录
       try {
-        const res = await login(this.user)
+        const { data } = await login(this.user)
         // 4.处理响应结果
-        console.log(res)
-        Toast.success('登录成功')
+        this.$toast.success('登录成功')
+        this.$store.commit('setUser', data.data)
       } catch (err) {
         console.log(err)
-        Toast.fail('登录失败,手机号或验证码错误')
+        this.$toast.fail('登录失败,手机号或验证码错误')
       }
     },
     onFailed (error) {
