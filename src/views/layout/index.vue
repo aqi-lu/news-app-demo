@@ -1,8 +1,8 @@
 <template>
   <div class="layout-container flex flex-col">
-    <van-nav-bar class="app-nav-bar">
+    <!-- <van-nav-bar class="app-nav-bar">
       <van-button type="info" slot="title" class="search-btn" icon="search" size="small" round>搜索</van-button>
-    </van-nav-bar>
+    </van-nav-bar> -->
     <!-- 子路由出口 -->
     <router-view />
     <!-- /子路由出口 -->
@@ -38,28 +38,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.layout-container {
-  height: calc(100vh - 50px);
-  overflow: hidden;
-}
-.app-nav-bar {
-  background-color: #3196fa;
-  ::v-deep .van-nav-bar__title {
-    max-width: none;
-  }
-  .search-btn {
-    width: 277px;
-    height: 32px;
-    background: #fff;
-    border: none;
-    .van-icon {
-      font-size: 16px;
-      color: gray;
-    }
-    .van-button__text {
-      font-size: 14px;
-      color: gray;
-    }
-  }
-}
+// .layout-container {
+//   height: calc(100vh - 50px);
+//   overflow: hidden;
+// }
+// .app-nav-bar {
+//   background-color: #333;
+//   ::v-deep .van-nav-bar__title {
+//     max-width: none;
+//   }
+//   .search-btn {
+//     width: 277px;
+//     height: 32px;
+//     background: #fff;
+//     border: none;
+//     .van-icon {
+//       font-size: 16px;
+//       color: gray;
+//     }
+//     .van-button__text {
+//       font-size: 14px;
+//       color: gray;
+//     }
+//   }
+// }
 </style>

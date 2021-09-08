@@ -1,5 +1,8 @@
 <template>
   <div class="home-container flex-1 flex">
+    <van-nav-bar class="app-nav-bar">
+      <van-button type="info" slot="title" class="search-btn" icon="search" size="small" round>搜索</van-button>
+    </van-nav-bar>
     <van-tabs
       class="tabs flex-1 flex flex-col"
       v-model="active"
