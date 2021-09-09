@@ -38,28 +38,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .layout-container {
-//   height: calc(100vh - 50px);
-//   overflow: hidden;
-// }
-// .app-nav-bar {
-//   background-color: #333;
-//   ::v-deep .van-nav-bar__title {
-//     max-width: none;
-//   }
-//   .search-btn {
-//     width: 277px;
-//     height: 32px;
-//     background: #fff;
-//     border: none;
-//     .van-icon {
-//       font-size: 16px;
-//       color: gray;
-//     }
-//     .van-button__text {
-//       font-size: 14px;
-//       color: gray;
-//     }
-//   }
-// }
 </style>

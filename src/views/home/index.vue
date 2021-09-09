@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container flex-1 flex">
+  <div class="home-container flex flex-col">
     <van-nav-bar class="app-nav-bar">
       <van-button type="info" slot="title" class="search-btn" icon="search" size="small" round>搜索</van-button>
     </van-nav-bar>
@@ -78,6 +78,8 @@
 </template>
 
 <script>
+import { findCategories } from '@/api/home'
+
 export default {
   name: 'HomeIndex',
   components: {},
@@ -89,18 +91,8 @@ export default {
       finished: false,
       showMenu: false,
       list: [],
-      channels: [
-        { id: 1, name: '搞笑' },
-        { id: 2, name: '恐怖' },
-        { id: 3, name: '故事' },
-        { id: 4, name: '爱情' }
-      ],
-      allChannels: [
-        { id: 5, name: '科普' },
-        { id: 6, name: '军事' },
-        { id: 7, name: '娱乐' },
-        { id: 8, name: '早教' }
-      ],
+      channels: [],
+      allChannels: [],
       isEdit: false
     }
   },
@@ -113,7 +105,14 @@ export default {
     }
   },
   watch: {},
-  created () {},
+  async created () {
+    const categories = await findCategories()
+    const res = categories.results.map(item => {
+      return { ...item, name: item.category_name }
+    })
+    this.channels = res.splice(0, 5)
+    this.allChannels = res
+  },
   mounted () {
     this.loadList()
   },
@@ -147,7 +146,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.app-nav-bar {
+  background-color: #333;
+  ::v-deep .van-nav-bar__title {
+    max-width: none;
+  }
+  .search-btn {
+    width: 277px;
+    height: 32px;
+    background: #fff;
+    border: none;
+    .van-icon {
+      font-size: 16px;
+      color: gray;
+    }
+    .van-button__text {
+      font-size: 14px;
+      color: gray;
+    }
+  }
+}
 .home-container, .tabs {
+  height: calc(100vh - 50px);
   overflow: hidden;
 }
 ::v-deep .van-tabs__content {
