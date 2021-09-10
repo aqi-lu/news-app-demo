@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container flex-1 flex">
+  <div class="home-container flex flex-col">
     <van-nav-bar class="app-nav-bar">
       <van-button type="info" slot="title" class="search-btn" icon="search" size="small" round>搜索</van-button>
     </van-nav-bar>
@@ -18,15 +18,23 @@
         :title="item.name"
         v-for="item in channels"
         :key="item.id"
+        :name="item.id"
       >
         <van-list
           v-model="loading"
           :finished="finished"
           finished-text="没有更多了"
           @load="onLoad"
-          offset="200"
+          offset="0"
         >
-          <van-cell v-for="(item, idx) in list" :key="idx" :title="item" />
+          <div class="px-10 bg-fff">
+            <article-cover
+              v-for="(item, idx) in articles"
+              :key="idx"
+              :title="item.subject"
+              :cover="item.image"
+            ></article-cover>
+          </div>
         </van-list>
       </van-tab>
     </van-tabs>
@@ -78,30 +86,31 @@
 </template>
 
 <script>
+import { findCategories, findArticlesByCategoryId } from '@/api/home'
+import ArticleDefault from '@/components/article-default.vue'
+import ArticleCover from '@/components/article-cover.vue'
+import ArticleMulti from '@/components/article-multi.vue'
+
 export default {
   name: 'HomeIndex',
-  components: {},
+  components: {
+    ArticleDefault,
+    ArticleCover,
+    ArticleMulti
+  },
   props: {},
   data () {
     return {
       active: 0,
       loading: false,
       finished: false,
-      showMenu: false,
-      list: [],
-      channels: [
-        { id: 1, name: '搞笑' },
-        { id: 2, name: '恐怖' },
-        { id: 3, name: '故事' },
-        { id: 4, name: '爱情' }
-      ],
-      allChannels: [
-        { id: 5, name: '科普' },
-        { id: 6, name: '军事' },
-        { id: 7, name: '娱乐' },
-        { id: 8, name: '早教' }
-      ],
-      isEdit: false
+      showMenu: false,  // 是否显示编辑频道弹窗
+      channels: [], // 我的频道
+      allChannels: [],  // 总共的频道
+      isEdit: false,  // 是否编辑频道中
+      articles: [], // 文章
+      page: 1,
+      totalPage: 1000
     }
   },
   computed: {
@@ -113,33 +122,69 @@ export default {
     }
   },
   watch: {},
-  created () {},
+  created () {
+    this.initData()
+  },
   mounted () {
-    this.loadList()
   },
   methods: {
-    loadList() {
+    async initData() {
+      const categories = await findCategories()
+      const res = categories.results.map(item => {
+        return { ...item, name: item.category_name }
+      })
+      this.channels = res.splice(0, 5)
+      this.$nextTick(async () => {
+        this.findArticles()
+      })
+      this.allChannels = res
+    },
+    async findArticles() {
       this.loading = true
-      for (let i = 0 ; i < 10 ; i ++) {
-        this.list.push('这是标题' + i)
+      const articleResult = await findArticlesByCategoryId({
+        cid: this.active,
+        page: this.page
+      })
+      this.loading = false
+      this.totalPage = articleResult.pagecount
+      this.articles = [...this.articles, ...articleResult.results]
+    },
+    getArticleItem(idx) {
+      let comp = ''
+      switch(idx % 3) {
+        case 0:
+          comp = 'article-default'
+          break
+        case 1:
+          comp = 'article-cover'
+          break
+        case 2:
+          comp = 'article-multi'
+          break
       }
-      setTimeout(() => {
-        this.loading = false
-      }, 2e3)
+      return comp
     },
     onLoad() {
-      this.loadList()
+      if (this.page >= this.totalPage) {
+        this.finished = true
+        return
+      }
+      this.page ++
+      this.findArticles()
     },
     onChange() {
-      this.list = []
-      this.loadList()
+      this.articles = []
+      this.page = 1
+      this.finished = false
+      this.findArticles()
     },
     addChannel(idx) {
+      // 这里这样写是因为还没有用户信息
       this.channels.push(...this.allChannels.splice(idx, 1))
     },
     removeChannel(idx) {
       if (!this.isEdit) return
-      console.log(this.channels, idx)
+      // 这里这样写是因为还没有用户信息
       this.allChannels.push(...this.channels.splice(idx - 1, 1))
     }
   }
@@ -147,7 +192,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.app-nav-bar {
+  background-color: #333;
+  ::v-deep .van-nav-bar__title {
+    max-width: none;
+  }
+  .search-btn {
+    width: 277px;
+    height: 32px;
+    background: #fff;
+    border: none;
+    .van-icon {
+      font-size: 16px;
+      color: gray;
+    }
+    .van-button__text {
+      font-size: 14px;
+      color: gray;
+    }
+  }
+}
 .home-container, .tabs {
+  height: calc(100vh - 50px);
   overflow: hidden;
 }
 ::v-deep .van-tabs__content {

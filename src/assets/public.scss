@@ -75,4 +75,16 @@ $colorName: '000', '333', '666', '999', 'ccc', 'ddd', 'eee', 'fff', '0ff';
 .text-center { text-align: center;}
 .text-right { text-align: right; }
 
+.line-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.line-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
 // 针对开发项目常用的样式配置
