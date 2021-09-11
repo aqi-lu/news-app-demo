@@ -20,6 +20,9 @@ ul { list-style: none; }
   .m-#{$i} { margin: $i * 1px; }
 }
 
+.ml-5 { margin-left: 5px; }
+.mt-5 { margin-top: 5px; }
+
 $colors: #000, #333, #666, #999, #ccc, #ddd, #eee, #fff, #1E90FF;
 $colorName: '000', '333', '666', '999', 'ccc', 'ddd', 'eee', 'fff', '0ff';
 
