@@ -116,9 +116,10 @@ export default {
         const { data } = await login(this.user)
         // 4.处理响应结果
         this.$toast.success('登录成功')
-        this.$store.commit('setUser', data.data)
+        this.$store.commit('setUser', data)
+        console.log(data)
         //登录成功跳转回原来界面
-        this.$router.back() 
+        this.$router.push('/my')
         //先用这种方式，，，，，
       } catch (err) {
         console.log(err)
@@ -156,6 +157,7 @@ export default {
         } else {
         // 未知错误
           message = '发送失败，请稍后重试'
+          console.log(message)
         }
 
         // 提示用户
