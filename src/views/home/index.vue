@@ -21,11 +21,17 @@
         :name="item.id"
       >
         <van-list
+          class="van-list"
+          :class="{ 'dis-trans': isDistransition }"
           v-model="loading"
           :finished="finished"
           finished-text="没有更多了"
           @load="onLoad"
           offset="0"
+          :style="getXStyle"
+          @touchstart.native="handleStart"
+          @touchmove.native="handleMove"
+          @touchend.native="handleEnd"
         >
           <div class="px-10 bg-fff">
             <article-cover
@@ -110,7 +116,10 @@ export default {
       isEdit: false,  // 是否编辑频道中
       articles: [], // 文章
       page: 1,
-      totalPage: 1000
+      totalPage: 1000,
+      direction: 0,
+      moveX: 0,
+      isDistransition: false
     }
   },
   computed: {
@@ -119,6 +128,11 @@ export default {
     },
     getAllChannels() {
       return this.allChannels.sort((a, b) => a.id - b.id)
+    },
+    getXStyle() {
+      return {
+        transform: `translateX(${this.moveX}px)`
+      }
     }
   },
   watch: {},
@@ -128,6 +142,41 @@ export default {
   mounted () {
   },
   methods: {
+    handleStart(e) {
+      const touch = e.touches[0]
+      this.startX = touch.clientX
+      this.move = this.throttle(e => {
+        if (this.active === 1 && e.touches[0].clientX - this.startX > 0) {
+          return
+        }
+        if (this.active === this.channels[this.channels.length -1].id && e.touches[0].clientX - this.startX < 0) {
+          return
+        }
+        this.moveX = e.touches[0].clientX - this.startX
+      }, 50)
+    },
+    handleMove(e) {
+      this.move(e)
+    },
+    handleEnd(e) {
+      setTimeout(() => {
+        if (Math.abs(this.moveX) < 200) {
+          this.resetPostion(false)
+          return
+        }
+        this.direction = this.moveX < 0 ? 1 : -1
+        this.active += this.direction
+        this.resetPostion(true)
+      }, 50)
+    },
+    resetPostion(isReq) {
+      this.isDistransition = true
+      this.moveX = 0
+      setTimeout(() => {
+        isReq && this.onChange()
+        this.isDistransition = false
+      })
+    },
     async initData() {
       const categories = await findCategories()
       const res = categories.results.map(item => {
@@ -212,6 +261,10 @@ export default {
     }
   }
 }
+.home-container {
+  width: 100%;
+  overflow: hidden;
+}
 .home-container, .tabs {
   height: calc(100vh - 50px);
   overflow: hidden;
@@ -256,6 +309,13 @@ export default {
     &:nth-child(4n + 1) {
       margin-left: 0;
     }
+  }
+}
+.van-list {
+  transition: all .5s;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.68, 1);
+  &.dis-trans {
+    transition: none !important;
   }
 }
 </style>
