@@ -3,14 +3,14 @@ import request from '@/utils/request'
 export const findCategories = () => {
   return request({
     method: 'get',
-    url: '/category'
+    url: '/self/category'
   })
 }
 
 export const findArticlesByCategoryId = ({ cid, page }) => {
   return request({
     method: 'get',
-    url: '/articles',
+    url: '/self/articles',
     params: {
       cid,
       page

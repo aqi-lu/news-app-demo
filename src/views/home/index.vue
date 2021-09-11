@@ -179,6 +179,7 @@ export default {
     },
     async initData() {
       const categories = await findCategories()
+      console.log(categories);
       const res = categories.results.map(item => {
         return { ...item, name: item.category_name }
       })
@@ -197,6 +198,7 @@ export default {
       this.loading = false
       this.totalPage = articleResult.pagecount
       this.articles = [...this.articles, ...articleResult.results]
+      console.log(this.articles)
     },
     getArticleItem(idx) {
       let comp = ''
