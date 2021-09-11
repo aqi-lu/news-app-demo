@@ -19,6 +19,10 @@ import 'amfe-flexible'
 // 加载全局样式(放到最后就不会影响组件样式加载了，方便覆盖第三方样式)
 import './styles/index.scss'
 
+import initMixins from '@/utils/mixins'
+
+initMixins(Vue)
+
 Vue.use(VideoPlayer)
 
 // 全局注册 Vant 中的组件
