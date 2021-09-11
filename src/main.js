@@ -3,6 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/public.scss'
+// VueVideoPlayer
+import VideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+import 'vue-video-player/src/custom-theme.css'
 // 加载 Vant 组件库
 import Vant from 'vant'
 
@@ -14,6 +18,8 @@ import 'amfe-flexible'
 
 // 加载全局样式(放到最后就不会影响组件样式加载了，方便覆盖第三方样式)
 import './styles/index.scss'
+
+Vue.use(VideoPlayer)
 
 // 全局注册 Vant 中的组件
 Vue.use(Vant)

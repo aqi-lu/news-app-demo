@@ -1,28 +1,38 @@
 <template>
-  <div class="video-container">
-    <van-cell-group>
-    <video id="video" src="./国防部发言.mp4"></video>
-    <canvas id="canvas" width="640" height="360"></canvas>
-
-    <input id="range" type="range" min="0" value="0" max="100">
-    <div class="time">
-      <span id="ls" class="left">00:00</span>
-      <span id="rs" class="right">00:00</span>
+  <div class="video-container bg-fff">
+    <video-player  class="video-player vjs-custom-skin"
+      ref="videoPlayer" 
+      :playsinline="true" 
+      :options="playerOptions"
+    ></video-player>
+    <div class="info-wrapper py-15">
+      <p class="title fs-16 color-333 line-2 px-10">国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部</p>
+      <div class="flex flex-row-end mt-10 px-10">
+        <p class="fs-12 color-999">10900观看</p>
+        <p class="fs-12 color-999 ml-15">20点赞</p>
+        <p class="fs-12 color-999 ml-15">时间：3天前</p>
+      </div>
+      <div class="comments mt-15">
+        <div class="comment-item flex px-10 py-15" v-for="(item, idx) in 10" :key="idx">
+          <img class="comment-avatar mr-15 mt-5" src="https://img0.baidu.com/it/u=2809737200,31955359&fm=26&fmt=auto&gp=0.jpg" alt="">
+          <div class="comment-content flex-1">
+            <div class="comment-header flex flex-row-between">
+              <p class="username fs-12 color-999 flex flex-col">
+                <span>我是评论者</span>
+                <span class="mt-5">2020-09-23</span>
+              </p>
+              <p class="color-999 flex flex-col-center">
+                <van-icon size="16" name="good-job-o"></van-icon>
+                <span class="fs-12 ml-5">20</span>
+              </p>
+            </div>
+            <div class="comment-text fs-12 color-333 mt-10">
+              看到四伯爷说重复我这辈子也是值了，感觉除了对佛跳墙的感叹，更多的是对刚哥这位后辈对自己的孝顺的欣慰。看到四伯爷说重复我这辈子也是值了，感觉除了对佛跳墙的感叹，更多的是对刚哥这位后辈对自己的孝顺的欣慰。
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <van-button id="btn_play">播放/暂停</van-button>
-    <van-button id="btn_vp">音量+</van-button>
-    <van-button id="btn_vm">音量-</van-button>
-    <van-button id="btn_05">0.5倍速</van-button>
-    <van-button id="btn_1">1倍速</van-button>
-    <van-button id="btn_2">2倍速</van-button>
-    <br><br>
-    <van-button id="btn_fc">全屏显示</van-button>
-
-    <input type="text" id="dminput" 
-      placeholder="输入弹幕内容">
-    <van-button id="btn_dm">发送弹幕</van-button>
-    </van-cell-group>
   </div>
 </template>
 
@@ -33,7 +43,31 @@ export default {
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      playerOptions: {
+        playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
+        autoplay: false, //如果true,浏览器准备好时开始回放。
+        muted: false, // 默认情况下将会消除任何音频。
+        loop: false, // 导致视频一结束就重新开始。
+        preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+        language: 'zh-CN',
+        aspectRatio: '4:3', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+        sources: [{
+          type: "video/mp4",//这里的种类支持很多种：基本视频格式、直播、流媒体等，具体可以参看git网址项目
+          src: require('./111.mp4') //url地址
+        }],
+        poster: "", //你的封面地址
+        // width: document.documentElement.clientWidth, //播放器宽度
+        notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
+        controlBar: {
+          timeDivider: true,
+          durationDisplay: true,
+          remainingTimeDisplay: false,
+          fullscreenToggle: true  //全屏按钮
+        }
+      }
+    }
   },
   computed: {},
   watch: {},
@@ -44,41 +78,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .container {
-      width: 375px;
-      border: 1px solid #ddd;
-      text-align: center;
-      padding-bottom: 10px;
-      position: relative;
-     p {
-      font-size: 1.3em;
-      font-weight: bold;
-      text-align: center;
-     }
-     img {
-      width: 340px;
-      height: 340px;
-      border-radius: 50%;
-     }
-     input{
-      width: 340px;
-      display: block;
-      margin: 10px auto;
-     }
-     .time{
-      width: 340px;
-      height: 30px;
-      margin: 0px auto;
-      .left{
-      float: left;
-      }
-      .right{
-      float: right;
-      }
-     }
+.video-container {
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+.comment {
+  &-item {
+    border-top: 1px solid #eee;
   }
-  video { width: 375px; height: 667px; background: #000;}
-    #canvas {
-      position: absolute; top:0; left: 0;
-    }
+  &-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+}
 </style>
