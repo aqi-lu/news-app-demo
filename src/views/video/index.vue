@@ -6,14 +6,16 @@
       :options="playerOptions"
     ></video-player>
     <div class="info-wrapper py-15">
-      <p class="title fs-16 color-333 line-2 px-10">国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部国防部</p>
+      <p class="title fs-16 color-333 line-2 px-10">
+        国防部
+      </p>
       <div class="flex flex-row-end mt-10 px-10">
         <p class="fs-12 color-999">10900观看</p>
         <p class="fs-12 color-999 ml-15">20点赞</p>
         <p class="fs-12 color-999 ml-15">时间：3天前</p>
       </div>
       <div class="comments mt-15">
-        <div class="comment-item flex px-10 py-15" v-for="(item, idx) in 10" :key="idx">
+        <div class="comment-item flex px-10 py-15" v-for="(item, idx) in 2" :key="idx">
           <img class="comment-avatar mr-15 mt-5" src="https://img0.baidu.com/it/u=2809737200,31955359&fm=26&fmt=auto&gp=0.jpg" alt="">
           <div class="comment-content flex-1">
             <div class="comment-header flex flex-row-between">
@@ -27,7 +29,7 @@
               </p>
             </div>
             <div class="comment-text fs-12 color-333 mt-10">
-              看到四伯爷说重复我这辈子也是值了，感觉除了对佛跳墙的感叹，更多的是对刚哥这位后辈对自己的孝顺的欣慰。看到四伯爷说重复我这辈子也是值了，感觉除了对佛跳墙的感叹，更多的是对刚哥这位后辈对自己的孝顺的欣慰。
+              傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗
             </div>
           </div>
         </div>
@@ -55,7 +57,7 @@ export default {
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [{
           type: "video/mp4",//这里的种类支持很多种：基本视频格式、直播、流媒体等，具体可以参看git网址项目
-          src: require('./111.mp4') //url地址
+          src: require('./222.mp4') //url地址
         }],
         poster: "", //你的封面地址
         // width: document.documentElement.clientWidth, //播放器宽度
