@@ -38,7 +38,7 @@
               v-for="(item, idx) in articles"
               :key="idx"
               :title="item.subject"
-              :cover="item.image"
+              :cover="require(`@/articles/${item.image}`)"
             ></article-cover>
           </div>
         </van-list>
