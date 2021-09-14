@@ -1,5 +1,5 @@
 <template>
-  <div class="qa-container">问答页面</div>
+  <div class="qa-container">问答页面,开发中...</div>
 </template>
 
 <script>

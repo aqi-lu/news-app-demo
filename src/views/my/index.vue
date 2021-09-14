@@ -182,7 +182,7 @@ export default {
 
   .not-login {
     height: 180px;
-    background: url("./banner.jpg") no-repeat;
+    background: url("./banner1.jpg") no-repeat;
     background-size: cover;
     display: flex;
     flex-direction: column;
