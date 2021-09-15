@@ -1,52 +1,26 @@
 <template>
-   <div>
-    <ul class="mui-table-view">
-      <li class="mui-table-view-cell mui-media" v-for="(item,index) in videolist" :key="item.title">
-        <div class="mui-media-body">
-          <p class="mui-ellipsis">
-            <span>标题：{{ item.title }}</span>
-            <span>上传时间：2020.5.21 13:14:88</span>
-          </p>
+  <div class="video-list px-20">
+    <div class="video-list-item pt-10" v-for="(item, idx) in list" :key="idx">
+      <p class="fs-14 color-333 line-2">{{ item.title }}</p>
+      <video-player
+        class="video-player vjs-custom-skin mt-10"
+        ref="videoPlayer"
+        :key="idx"
+        :playsinline="true"
+        :options="initOptions(item)"
+      ></video-player>
+      <div class="operate flex py-10 color-999 fs-16" @click="toDetail">
+        <div class="flex-1 flex flex-row-center flex-col-center">
+          <van-icon name="thumb-circle-o"></van-icon>
+          <span class="ml-5">{{ item.good }}</span>
         </div>
-        <h1>
-          <video-player
-            class="video-player vjs-custom-skin"
-            ref="videoPlayer"
-            :playsinline="true"
-            :options="playerOptions[index]"
-            @play="onPlayerPlay($event,index)"
-            @pause="onPlayerPause($event)"
-          ></video-player>
-        </h1>
-      </li>
-    </ul>
-    <div class="info-wrapper py-15">
-      <p class="title fs-16 color-333 line-2 px-10">
-        国防部
-      </p>
-      <div class="flex flex-row-end mt-10 px-10">
-        <p class="fs-12 color-999">10900观看</p>
-        <p class="fs-12 color-999 ml-15">20点赞</p>
-        <p class="fs-12 color-999 ml-15">时间：3天前</p>
-      </div>
-      <div class="comments mt-15">
-        <div class="comment-item flex px-10 py-15" v-for="(item, idx) in 2" :key="idx">
-          <img class="comment-avatar mr-15 mt-5" src="https://img0.baidu.com/it/u=2809737200,31955359&fm=26&fmt=auto&gp=0.jpg" alt="">
-          <div class="comment-content flex-1">
-            <div class="comment-header flex flex-row-between">
-              <p class="username fs-12 color-999 flex flex-col">
-                <span>我是评论者</span>
-                <span class="mt-5">2020-09-23</span>
-              </p>
-              <p class="color-999 flex flex-col-center">
-                <van-icon size="16" name="good-job-o"></van-icon>
-                <span class="fs-12 ml-5">20</span>
-              </p>
-            </div>
-            <div class="comment-text fs-12 color-333 mt-10">
-              傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗
-            </div>
-          </div>
+        <div class="flex-1 flex flex-row-center flex-col-center">
+          <van-icon name="comment-o"></van-icon>
+          <span class="ml-5">{{ item.comment }}</span>
+        </div>
+        <div class="flex-1 flex flex-row-center flex-col-center">
+          <van-icon name="share-o"></van-icon>
+          <span class="ml-5">{{ item.forward }}</span>
         </div>
       </div>
     </div>
@@ -57,81 +31,62 @@
 export default {
   data() {
     return {
-      videolist: [
-        { title: "标题A", movie: "./111.mp4" },
-        { title: "标题B", movie: "./222.mp4" }
-      ],
-      playsinline: true,
-      playerOptions: [],
-      options: ""
-    };
+      list: []
+    }
   },
   created() {
-    this.getMovieList();
+    // 假装请求获取视频的数据
+    setTimeout(() => {
+      const data = [
+        { title: '爱的色放垃圾水电费蓝思科技地方', url: '111.mp4', good: 20, comment: 50, forward: 30 },
+        { title: '支持传入图标名称或图片链接，所有可用的图标名称见右侧示例。', url: '222.mp4', good: 11, comment: 33, forward: 12 },
+        { title: '会在图标右上角展示一个小红点', url: '111.mp4', good: 12, comment: 12, forward: 1 },
+        { title: 'Icon 的 color 属性用来设置图标的颜色。', url: '222.mp4', good: 34, comment: 14, forward: 34 },
+        { title: '属性用来设置图标的尺寸大小，默认单位为 px', url: '111.mp4', good: 33, comment: 55, forward: 12 },
+        { title: 'Icon 组件默认引用有赞 CDN 提供的字体文件，', url: '222.mp4', good: 112, comment: 66, forward: 111 }
+      ]
+      this.list = data
+    })
   },
-
   methods: {
-    getMovieList() {
-    // 这里正常来说应该是从后台获取的数据，以下操作都是在成功的回调函数里
-      for (var i = 0; i < this.videolist.length; i++) {
-          let arrs = {
-            playbackRates: [1.0, 2.0, 3.0], //播放速度
-            autoplay: false, //如果true,浏览器准备好时开始回放。
-            muted: false, // 默认情况下将会消除任何音频。
-            loop: false, // 导致视频一结束就重新开始。
-            preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
-            language: "zh-CN",
-            aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-            fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-            sources: [
-              {
-                type: "video/mp4",
-                type: "video/ogg",
-                src: require("./222.mp4") //url地址
-              }
-            ],
-            poster: "", //封面地址
-            notSupportedMessage: "此视频暂无法播放，请稍后再试", //允许覆盖Video.js无法播放媒体源时显示的默认信息。
-            controlBar: {
-              timeDivider: true,
-              durationDisplay: true,
-              remainingTimeDisplay: false,
-              fullscreenToggle: true //全屏按钮
-            }
-          };
-          this.playerOptions.push(arrs);
-        }
+    initOptions(item) {
+      return{
+        preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+        language: "zh-CN",
+        aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+        sources: [
+          {
+            type: "video/mp4",
+            type: "video/ogg",
+            src: require('./' + item.url) //url地址
+          }
+        ]
+      }
     },
-    onPlayerPlay(player, index) {
- 
-      
-       var that = this.$refs.videoPlayer;
-       for (let i = 0; i < that.length; i++) {
-          if(i != index)
-          that[i].player.pause()
-       }
-    },
-    onPlayerPause(player) {
-
-      
+    toDetail() {
+      this.$router.push({ name: 'VideoDetail' })
     }
   }
-};
+}
 </script>
 
-<style lang="scss" scoped>
-.video-container {
+<style lang="scss">
+.video-list {
   min-height: 100vh;
+  background: #fff;
   padding-bottom: 50px;
 }
-.comment {
-  &-item {
-    border-top: 1px solid #eee;
-  }
-  &-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+.video-list-item {
+  border-bottom: 1px solid #ddd;
+  .video-player {
+    border-radius: 10px;
+    overflow: hidden;
+    height: 150px;
+    & > div {
+      padding: 0;
+      height: 100%;
+    }
   }
 }
 </style>
