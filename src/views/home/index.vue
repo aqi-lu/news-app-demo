@@ -158,7 +158,7 @@ export default {
     handleMove(e) {
       this.move(e)
     },
-    handleEnd(e) {
+    handleEnd(e) { 
       setTimeout(() => {
         if (Math.abs(this.moveX) < 200) {
           this.resetPostion(false)

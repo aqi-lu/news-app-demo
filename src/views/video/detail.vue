@@ -30,7 +30,7 @@
               </p>
             </div>
             <div class="comment-text fs-12 color-333 mt-10">
-              傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗傻狗
+              此处为评论区
             </div>
           </div>
         </div>
